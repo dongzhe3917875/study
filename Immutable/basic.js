@@ -98,6 +98,8 @@ console.log(map3 === map4); // false
 console.log(Immutable.is(map3, map4)); // true
 
 
-//与 Object.freeze、const 区别
+// 与 Object.freeze、const 区别
 
 // Object.freeze 和 ES6 中新加入的 const 都可以达到防止对象被篡改的功能，但它们是 shallowCopy 的。对象层级一深就要特殊处理了。/
+
+// Cursor 的概念
