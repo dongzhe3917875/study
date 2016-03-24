@@ -45,7 +45,7 @@ function sample() {
     // never forget callback to indicate that the file has been processed.
     var matchPath = processPath(file.path);
     var finalPath = file.path.replace(/_md/, "$");
-    console.log(matchPath, finalPath);
+    // console.log(matchPath, finalPath);
     fs.writeFileSync(finalPath, fs.readFileSync(
       matchPath, "utf-8") + fs.readFileSync(file.path, "utf-8"))
     this.push(file);
