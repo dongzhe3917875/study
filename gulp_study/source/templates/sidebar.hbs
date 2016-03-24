@@ -1,0 +1,12 @@
+<div class="index_wrapper">
+  {{#each dir}}
+    {{#each this}}
+    <ul>
+      {{@key}}
+      {{#each this}}
+        <li>{{this}}</li>
+      {{/each}}
+    </ul>
+    {{/each}}
+  {{/each}}
+</div>
