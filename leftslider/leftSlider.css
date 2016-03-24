@@ -1,0 +1,39 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.wrapper {
+  width: 1000px;
+  margin: 200px auto;
+}
+.wrapperfloatRight {
+  display: inline-block;
+
+  width: 1000px;
+  border-right: 200px solid #ccc;
+  box-sizing:border-box;
+  background-color: #fce;
+
+}
+
+.leftfloatRight {
+  overflow: hidden;
+  position: relative;
+}
+
+.rightfloatRight {
+  float: right;
+  width: 200px;
+  margin-right: -200px;
+}
+.innerSlider {
+  width: 200%;
+  position: relative;
+  left: 0;
+}
+.innerSlider .innerItem {
+  width: 50%;
+  float: left;
+  list-style-type: none;
+  margin-top: 10px;
+}
