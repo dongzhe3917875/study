@@ -9,7 +9,7 @@
 .wrapperfloatRight {
   display: inline-block;
 
-  width: 1000px;
+  width: 100%;
   border-right: 200px solid #ccc;
   box-sizing:border-box;
   background-color: #fce;
@@ -30,6 +30,7 @@
   width: 200%;
   position: relative;
   left: 0;
+  overflow: hidden;
 }
 .innerSlider .innerItem {
   width: 50%;
