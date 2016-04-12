@@ -7,6 +7,11 @@ Object.observe(user, function(changes) {
     console.log(change.object.firstname)
   });
 });
+// changes
+/*
+[{"type":"add","object":{"firstname":"董哲123456","lastname":"sdsdsd"},"name":"firstname"}
+,{"type":"add","object":{"firstname":"董哲123456","lastname":"sdsdsd"},"name":"lastname"}]
+*/
 user.firstname = '董哲123456';
 user.lastname = 'sdsdsd';
 
