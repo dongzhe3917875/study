@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.css">
+    <style>
+      body {
+        font-size: 14px;
+        line-height: 1.42858;;
+      }
+      .icon {
+        display: inline-block;
+        width:20px; height:20px;
+        white-space:nowrap;
+        text-decoration: none;
+      }
+      .icon1:before {
+        content: '\3000';
+      }
+      .icon1 {
+        background: url("17.png");
+        background-size: contain;
+        letter-spacing: -1em;
+        text-indent: -99em;
+      }
+    </style>
+  </head>
+  <body>
+    <p>如果inline-block水平元素’overflow’不是’visible’，或者里面没有内联元素（图片、文字之类），则整个元素的基线就是自身的下边缘；否则，基线就是里面最后一行图文元素的基线（这是我们需要的）。</p>
+
+    <i class="icon icon1"></i>
+    <a href="javascript:" class="icon">删除</a>
+  </body>
+</html>

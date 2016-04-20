@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>writing-mode</title>
+  <style>
+  blockquote {
+    background:#f9f9f9;
+    border-left:10px solid #ccc;
+    margin:1.5em 10px;
+    padding:.5em 10px;
+    quotes:"\201C""\201D""\2018""\2019";
+  }
+  blockquote:before {
+    color:#ccc;
+    content:open-quote;
+    font-size:4em;
+    line-height:.1em;
+    margin-right:.25em;
+    vertical-align:-.4em;
+  }
+  blockquote p {
+    display:inline;
+  }
+  .show {
+    background-color: #abc;
+  }
+  .show.table {
+    display: table;
+  }
+  .common {
+    background-color: #ccc;
+  }
+  code {
+    color: #c7254e;
+    background-color: #f9f2f4;
+    padding: 2px 4px;
+    font-size: 90%;
+    border-radius: 3px;
+  }
+  .line {
+    height: 100px;
+    line-height: 100px;
+  }
+  .simpleimg {
+    height: 100px;
+  }
+  .simpleimg span{
+    height: 100px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .simpleimg img {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .unfixedimg {
+    height: 200px;
+    position: relative;
+  }
+  .unfixedimg span{
+    /*position: absolute;*/
+    /*left: 0;
+    right: 0;*/
+    height: 100%;
+    width: 1px;
+    background-color: green;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .unfixedimg img {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .inline-block {
+    display: inline-block;
+    vertical-align: middle;
+    width: 100px;
+  }
+  .table-cell {
+    display: table-cell;
+    vertical-align: middle;
+    width: 100px;
+  }
+  .translate {
+    height: 200px;
+  }
+  .ele {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200px;
+    writing-mode: horizontal-tb;
+  }
+  /*.writing-mode {
+    writing-mode:vertical-rl;
+  }*/
+  .relative {
+    position: relative;
+  }
+  .right {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .up {
+    height: 100%;
+    writing-mode:vertical-rl;
+  }
+  .up div {
+    writing-mode: horizontal-tb;
+    width: 100%;
+  }
+  .center {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .fixheightwrapper {
+    position: relative;
+  }
+  .fixheight {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    height: 240px;
+  }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <h3>文本垂直居中</h3>
+    <h4>单行文本垂直居中</h4>
+    <p>对于一行文本且父元素定高的垂直居中， 只需要设置<code>line-height</code>属性即可, 水平居中的话设置<code>text-align:center</code>就好</p>
+    <div class="show">
+      <div class="common line">
+        我只有一行文本,我要垂直居中.....
+      </div>
+    </div>
+    <p>单行文本居中父元素的高度必须固定</p>
+    <h4>多行文本垂直居中</h4>
+    <p>多行文本居中需要将多行文本放到div中，详情参见div垂直居中</p>
+    <h3>图片垂直居中</h3>
+    <p>图片的本质就是<code>display:inline-block</code></p>
+    <p><code>display:inline-block</code>垂直居中需要使用<code>vertical-align:center</code></p>
+    <p>但是<code>vertical-align:center</code>单独设置是没有作用的，</p>
+    <blockquote cite="http://blog.csdn.net/wyzlwyzl/article/details/17734077">
+      <p>该属性定义行内元素的基线相对于该元素所在行的基线的垂直对齐</p>
+    </blockquote>
+    <a href="http://blog.csdn.net/wyzlwyzl/article/details/17734077">explain</a>
+    <p>这里说的所在行的基线个人认为是由其他兄弟元素参考的 各个兄弟元素之间互相参考 总之设成middle他们就都能互相居中对齐了</p>
+    <p>在这有一个小提示 对于<code>table-cell</code>来说 可以设置单独一个元素<code>vertical-align:center</code>这样他会相对于父元素垂直居中，这个在后面还会提到</p>
+    <p>对于一张图片的垂直居中，对图片本身的高度没有要求，针对父元素的高度定高不定高分成两种情况</p>
+    <h4>父元素定高</h4>
+    <p>这时候需要插入一个空白的元素，且将高度设为父元素的高度, 最后将两个子元素都设成<code>vertical-align:middle,display:inline-block</code></p>
+    <p>水平居中的话设置<code>text-align:center</code>就好</p>
+    <div class="show">
+      <div class="common simpleimg">
+        <span></span>
+        <img src="17.png" alt="">
+      </div>
+    </div>
+    <h4>父元素不定高</h4>
+    <p>父元素不定高最大的问题是无法通过设置子元素的<code>height:100%</code>来完成将子元素撑满父元素的，</p>
+    <p>究其原因是高度的继承是没有默认值的（宽度是父元素的100%）</p>
+    <p>解决这个问题有两种方法</p>
+    <ul>
+      <li>1. 改写writing-mode的默认值horizontal-tb改为vertical-rl （宽度继承改为高度继承） <code>writing-mode:vertical-rl</code></li>
+      <li>2. 将子元素触发layout（形成BFC） 比如position display 这样就可以设置宽和高了 <code>display:inline-block</code></li>
+      <li>3. 如果存在一个非<code>display:inline-block</code>的元素那么这样的布局就分崩离析了</li>
+    </ul>
+    <p>在这里采用<code>display:inline-block</code>的方式</p>
+    <p><b>PS ：</b>为什么不用position？</p>
+    <p><code>position:absolute</code>会脱离文档流 导致与img不在一个文档流 不能互相设置<code>vertical-align:middle</code></p>
+    <div class="show">
+      <div class="common unfixedimg">
+        <span></span>
+        <img src="17.png" alt="">
+      </div>
+    </div>
+    <p>现在可以动态的改变父元素的高度 会发现垂直居中不会受到影响</p>
+    <p>水平居中的话设置<code>text-align:center</code>就好</p>
+    <h3>div垂直居中</h3>
+    <p>这可能是用到的最广泛的居中对齐方式了，按照惯例，这次也分为定高，不定高两种情况</p>
+    <p>这次我们先来说点别的，看到上面我们<code>display:inline-block</code>的垂直居中是不是很好用，我们就想，block的div华丽变身不就是inline-block吗？</p>
+    <p>当然div元素可以设置成<code>display:inline-block</code>来借助<code>display:inline-block</code>来居中</p>
+    <p>题外话 <code>display:inline-block</code>之间是有空白间隙的 空白间隙的大小是与父元素的<code>font-size</code>有关的，当然消除的方法，聪明的你已经想到...</p>
+    <p>举个栗子</p>
+    <div class="show">
+      <div class="common inline-block">
+        这是元素，超过100px，就要多行，看看效果
+      </div>
+      <div class="common inline-block">
+        这是元素，超过100px，就要多行，看看效果
+        这是元素，超过100px，就要多行，看看效果
+      </div>
+      <img src="17.png" alt="" style="vertical-align:middle">
+      <div class="common inline-block">
+        这是元素，超过100px，就要多行，看看效果
+        这是元素，超过100px，就要多行，看看效果
+        这是元素，超过100px，就要多行，看看效果
+      </div>
+
+    </div>
+    <p>看，是不是很好用</p>
+    <p>甚至我们可以拓展一个右对齐的应用 这在现实中非常有用</p>
+    <div class="show relative">
+      <div class="common inline-block">
+        这是元素，超过100px，就要多行，看看效果
+      </div>
+      <div class="common inline-block right">
+        这是元素，超过100px，就要多行，看看效果
+        这是元素，超过100px，就要多行，看看效果
+      </div>
+      <img src="17.png" alt="" style="vertical-align:middle">
+      <div class="common inline-block">
+        这是元素，超过100px，就要多行，看看效果
+        这是元素，超过100px，就要多行，看看效果
+        这是元素，超过100px，就要多行，看看效果
+      </div>
+
+    </div>
+    <p>再多点变化也没事</p>
+    <div class="show relative">
+      <div class="common inline-block">
+        这是元素，超过100px，就要多行，看看效果
+      </div>
+      <div class="common inline-block right">
+        这是元素，超过100px，就要多行，看看效果
+        这是元素，超过100px，就要多行，看看效果
+      </div>
+      <img src="17.png" alt="" style="vertical-align:middle">
+      <div class="common inline-block">
+        这是元素，超过100px，就要多行，看看效果
+        这是元素，超过100px，就要多行，看看效果
+        这是元素，超过100px，就要多行，看看效果
+      </div>
+      <div class="common inline-block up">
+        <div>这是元素，超过100px，就要多行，看看效果</div>
+      </div>
+    </div>
+    <p>对于up我想到方法是在up上with设置auto 然后在添加内容宽度改变之后之后设置writing-mode</p>
+    <p>天下没有免费的午餐，对于这样的布局也有一些缺陷</p>
+    <ul>
+      <li>1.如果只是针对一个inline-block元素，我们总是需要引入一个空白的标签来干这个事</li>
+      <li>2.对于不是<code>display:inline-block</code>元素一起的父元素的高度变化，其他元素并不会跟随着垂直居中（因为参考线并没有随着改变）</li>
+    </ul>
+    <p>这个可以使用table table-cell布局来搞定</p>
+    <div class="show table">
+      <div class="common table-cell">
+        这是元素，超过100px，就要多行，看看效果
+      </div>
+      <div class="common table-cell">
+        这是元素，超过100px，就要多行，看看效果
+        这是元素，超过100px，就要多行，看看效果
+      </div>
+      <div class="common table-cell">
+        这是元素，超过100px，就要多行，看看效果
+        这是元素，超过100px，就要多行，看看效果
+        这是元素，超过100px，就要多行，看看效果
+      </div>
+    </div>
+    <p>当然要给<code>table-cell</code>指定宽度 这样<code>table</code>的宽度也会变化</p>
+    <p><code>table-cell</code> <code>table</code>宽度是联动的 不能分别单独设置</p>
+    <p>听说有的用户用的很不爽？哈哈 这只是我想要的，好了 说正题</p>
+    <h4>父元素定高，div子元素定高</h4>
+    <p>这个垂直居中不用我说，自己去算就好了（a-b）/ 2 利用less有惊喜</p>
+    <h4>父元素定高，div子元素不定高</h4>
+    <p>这里既然父元素定高了，那么我们可以使用<code>position:relative; top:50%;</code>来将元素向下移动 50%</p>
+    <p>下面我们遇到的难题是如何将子元素自身往上移动-50%，因为子元素的高度不固定，所以这的确是一个难题，有没有属性可以相对于自身的高度进行定位呢</p>
+    <p>答案就是<code>transform:translateY(-50%)</code>这个属性就可以将自身的元素相对自身高度进行定位，所以尤其适合不定高的元素</p>
+    <p>例子来了</p>
+    <div class="show">
+      <div class="common translate">
+        <div class="ele">
+          这是元素，超过100px，就要多行，看看效果
+          这是元素，超过100px，就要多行，看看效果
+          这是元素，超过100px，就要多行，看看效果
+        </div>
+      </div>
+    </div>
+    <h4>父元素不定高 子元素定高</h4>
+    <p>这是传说中的绝对定位可以搞定的</p>
+    <div class="show">
+      <div class="common fixheightwrapper">
+        <div class="fixheight">
+          这是元素，超过100px，就要多行，看看效果
+          这是元素，超过100px，就要多行，看看效果
+          这是元素，超过100px，就要多行，看看效果
+        </div>
+        <div>
+          <p>1</p>
+          <p>2</p>
+          <p>3</p>
+          <p>4</p>
+          <p>5</p>
+          <p>6</p>
+          <p>7</p>
+          <p>8</p>
+          <p>9</p>
+          <p>10</p>
+        </div>
+      </div>
+    </div>
+    <h4>父元素不定高，div子元素不定高</h4>
+    <p>这的确是一项难度很大的挑战，挑战的难度在于当父元素的高度不固定了，我们的top：50% 没有了参考的对象，于是就悲剧了</p>
+    <p>无意中发现了一个较为神奇的属性 当<code>position:absolute</code>top的百分比能相对不定高的父元素进行定位</p>
+    <p>到底行不行 我也不知道 赶紧来试试</p>
+    <div class="show">
+      <div class="common relative">
+        <div class="center">
+          <p>啊实打实</p>
+          <p>撒大大</p>
+        </div>
+        <div class="unfixheight">
+          <p>1</p>
+          <p>2</p>
+          <p>3</p>
+          <p>4</p>
+          <p>5</p>
+          <p>6</p>
+          <p>7</p>
+          <p>8</p>
+          <p>9</p>
+          <p>10</p>
+        </div>
+      </div>
+    </div>
+    <p>果然是可以的 现在可以任意的改变父元素和子元素的高度了 但是美中不足的是 当父元素告诉比子元素小时 需要取消掉<code>transform:translateY(-50%)</code>才行</p>
+  </div>
+</body>
+</html>

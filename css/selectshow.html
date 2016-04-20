@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="http://libs.useso.com/js/jquery/1.9.1/jquery.min.js"></script>
+  <style>
+  .hide {
+    display: none;
+  }
+  .wrapper {
+    width: 100%;
+    /* height: 200px; */
+    writing-mode: vertical-lr;
+    background-color: #ccc;
+  }
+  div.inner {
+    /* height: 50px; */
+    margin-top: 50%;
+    writing-mode: vertical-lr;
+  }
+  .innerin {
+    /* height: 50px; */
+    /*margin-top: -50%;*/
+    /*width: 100%;*/
+    transform: translateY(-50%);
+    writing-mode: horizontal-tb;
+    display: inline-block;
+    display: table;
+  }
+  .wrapper div.content {
+    display: table-cell;
+    vertical-align: middle;
+  }
+  .hei {
+    height: 100px;
+  }
+  img {
+    height: 50px;
+  }
+  div.all {
+    /*position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;*/
+  }
+  </style>
+</head>
+<body>
+  <div class="all"></div>
+  <select name="" id="">
+    <option value="" class="hide">1</option>
+    <option value="" class="">2</option>
+    <option value="" class="">3</option>
+    <option value="" class="hide">4</option>
+    <option value="" class="hide">5</option>
+  </select>
+  <button class="change">change</button>
+  <ul>
+    <li class="hide">1</li>
+    <li class="">2</li>
+    <li class="hide">3</li>
+    <li class="">4</li>
+    <li class="">5</li>
+  </ul>
+  <div class="wrapper">
+    <div class="inner">
+      <div class="innerin">
+        <img src="http://p3.so.qhimg.com/t01169c8ac1da17dbe8.jpg" alt="">
+        <div class="content"><div class="text">sssssddddddd</div></div>
+      </div>
+    </div>
+
+    <div class="inner">
+      <div class="innerin">
+        <img src="http://p3.so.qhimg.com/t01169c8ac1da17dbe8.jpg" alt="">
+        <div class="content"><div class="text">sssssddddddd</div></div>
+      </div>
+    </div>
+    <div class="hei"></div>
+  </div>
+</body>
+<script>
+$(".change").on("click", function() {
+  $("select option").not(".hide").eq(0).prop("selected", true);
+})
+
+</script>
+</html>
