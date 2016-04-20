@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="font-awesome-4.6.1/css/font-awesome.min.css">
+</head>
+
+<body>
+
+  <div id="config-box">
+    <div>
+      <span class="title">方向</span>
+      <span class="context">下行</span>
+    </div>
+    <div>
+      <span class="title">策略</span>
+      <span class="context">接受</span>
+    </div>
+    <div>
+      <span class="title">应用</span>
+      <ul id="cup-list">
+        <li class="config-item" v-bind:class="{active: iscurapp==$index}" v-on:click="changeApplication($event, $index)" v-for="application in applications" data-key="{{application.key? application.key: application.text}}">
+          {{ application.text }}
+        </li>
+      </ul>
+    </div>
+    <div>
+      <span class="title">协议</span>
+      <ul id="ram-list">
+        <li class="config-item" v-bind:class="{active: iscurprotocal==$index}" v-on:click="changeProtocal($event, $index)" v-for="protocol in protocols">
+          {{ protocol }}
+        </li>
+      </ul>
+    </div>
+    <div>
+      <span class="title">源IP</span>
+      <span class="context"><input type="text" v-model="ip"  placeholder="10.10.10.1" v-on:keyup="validateIP($event)" v-on:focus="tipvalidateIP($event)"></span>
+      <span class="tip" v-show="ifShowTip">{{{iptip}}}</span>
+    </div>
+    <div>
+      <span class="title">端口</span>
+      <span class="context"><input type="text" v-bind:disabled="disabled" v-on:focus="tipvalidatePort($event)" placeholder={{placeholder}} v-on:keyup="validatePort($event)" v-bind:value="defaultport" v-model="defaultport"></span>
+      <span class="tip" v-show="ifShowPortTip">{{{porttip}}}</span>
+    </div>
+    <div>
+      <ul id="config-infolist">
+        <li v-for="infolist in infolists">
+          <label for="">{{ infolist.label }}</label><span>应用{{currentApplication}}， 协议{{currentProtocal}} IP{{ip}} PORT{{defaultport}}
+          port {{ifPortValidate}} ip {{ifIPValidate}}</span>
+        </li>
+      </ul>
+      <button v-on:click="send($event, $index)" v-bind:class="{disabled1: ifPortValidate, disabled2: ifIPValidate}">发送</button>
+    </div>
+  </div>
+  <script src="vue.js"></script>
+  <script src="script1.js"></script>
+</body>
+
+</html>

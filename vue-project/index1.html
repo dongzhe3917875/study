@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="config-box">
+        
+        <ul id="cup-list">
+            <li class="config-item" v-bind:class="{active: iscurcpu==$index}" v-on:click="changeCpu($event, $index)" v-for="cpu in cpus" data-key="{{application.key? application.key: application.text}}">
+                {{ cpu.text }}
+            </li>
+        </ul>
+
+        <ul id="ram-list">
+            <li class="config-item" v-bind:class="{active: iscurram==$index}" v-on:click="changeRam($event, $index)" v-for="ram in rams">
+                {{ ram.text }}
+            </li>
+        </ul>
+
+        <ul id="config-infolist">
+            <li v-for="infolist in infolists">
+                <label for="">{{ infolist.label }}</label><span>CPU{{currentCpu}}， RAM{{click ? currentram : currentRam}}</span>
+            </li>
+        </ul>
+        <button v-on:click="send($event, $index)">发送</button>
+    </div>
+    <script src="vue.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
