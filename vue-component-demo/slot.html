@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>diyevent</title>
+  <script src="https://cdn.jsdelivr.net/vue/latest/vue.js"></script>
+</head>
+<body>
+<!--
+<child-component>
+  {{ msg }}
+</child-component>
+msg 应该绑定到父组件的数据，还是绑定到子组件的数据？答案是父组件。组件作用域简单地说是：
+深刻理解这句话...：父组件模板的内容在父组件作用域内编译；子组件模板的内容在子组件作用域内编译
+ -->
+ <!-- 看得见子组件标签的数据都绑定在父组件上 （类比于函数调用的参数）-->
+ <!-- slot之单个slot -->
+ <template id="mycom">
+   <div>
+    <h1>This is my component!</h1>
+    <slot>
+      This will only be displayed if there is no content
+      to be distributed.
+    </slot>
+  </div>
+ </template>
+ <div id="my-component">
+   <my-component>
+     <!-- 如果没内容 就显示默认内容 -->
+     <p>This is some original content</p>
+     <p>This is some more original content</p>
+   </my-component>
+ </div>
+
+ <!-- slot可以命名 理解为见缝插针 缝使用name 针使用slot 没有名字的slot负责回收找不到家的小伙伴-->
+ <!-- 如果没有默认的slot 则找不到回家的小伙伴就永远的消失了 -->
+ <template id="muti">
+  <div>
+    <slot name="one"></slot>
+    <slot></slot>
+    <slot name="two"></slot>
+  </div>
+ </template>
+
+ <div class="muti">
+   <multi-insertion>
+    <p slot="one">One</p>
+    <p slot="two">Two</p>
+    <p>Default A</p>
+    </multi-insertion>
+ </div>
+</body>
+<script>
+  Vue.component("my-component", {
+    template: "#mycom"
+  });
+  new Vue({
+    el: "#my-component"
+  });
+  Vue.component("multi-insertion", {
+    template: "#muti"
+  });
+  new Vue({
+    el: ".muti"
+  });
+</script>
+</html>

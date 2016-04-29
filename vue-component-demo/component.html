@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>component</title>
+  <script src="https://cdn.jsdelivr.net/vue/latest/vue.js"></script>
+</head>
+<body>
+  <div id="example">
+    <!-- sss只是作为一个挂载点 会被tempalte中的内容替换 -->
+    <my-component>sss</my-component>
+  </div>
+  <div id="parent">
+    <!-- sss只是作为一个挂载点 会被tempalte中的内容替换 -->
+    <p>parent-child 这个是错误的 child的的组件应该写在模板里</p>
+    <xmp>
+      <parent-component>
+        <child-component></child-component>
+      </parent-component>
+    </xmp>
+    <p>parent 下面可以正确的渲染</p>
+    <parent-component></parent-component>
+    <blockquote>child这样单独不可以使用 因为注册是在parent内进行的</blockquot>
+  </div>
+
+  <h4>ul - my-li</h4>
+  <div id="ul">
+    <my-ul>
+
+    </my-ul>
+    <my-div>
+
+    </my-div>
+  </div>
+  <div id="table">
+    <div>
+      <table>
+        <tbody>
+          <tr is="dongzhe-tr"></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+
+<script type="text/javascript">
+  // 正常注册
+  // 1.extend
+  var MyComponent = Vue.extend({
+    template: "<div>template</div>"
+  });
+  // 2.component
+  Vue.component("my-component", MyComponent);
+  // 3. new
+  new Vue({
+    el: "#example"
+  })
+
+  // 局部注册 在extend中的components是存在作用域的，可以让组件只能用在其它组件内
+  var Child = Vue.extend({
+    template: "<div>i am a child</div>"
+  });
+  var Parent = Vue.extend({
+    template: "<div><p><b>i am parent</b></p><child-component></child-component></div>",
+    components: {
+       // 这个是在父组件模板template里面的 而不是在外面的标签的
+      "child-component": Child
+    }
+  });
+  Vue.component("parent-component", Parent);
+  new Vue({
+    el: "#parent"
+  });
+
+
+  // 注册语法糖的写法
+  // Vue.component('my-component', {
+  //   template: '<div>A custom component!</div>'
+  // })
+  // var Parent = Vue.extend({
+  //   components: {
+  //     'my-component': {
+  //       template: '<div>A custom component!</div>'
+  //     }
+  //   }
+  // })
+
+  // data 和 el选项 需要一个函数来返回一个新的对象
+
+  // 模板解析的一个问题 不能在ul select table等有限制的标签内中使用自定义标签
+
+  Vue.component("my-li", {
+    template: '<li>111111</li>'
+  });
+  Vue.component("my-div", {
+    template: '<div><my-li></my-li><my-li></my-li><my-li></my-li></div>'
+  });
+  Vue.component("my-ul", {
+    template: '<ul><my-li></my-li><my-li></my-li><my-li></my-li></ul>'
+  });
+  new Vue({
+    el: "#ul"
+  })
+
+  // is 特性 props传递数据
+
+  Vue.component('dongzhe-tr', {
+    template: '<tr v-bind:class="msg" v-for="item in items"><td>name: {{item.name}}  </td><td>age: {{item.age}}</td><td><span is="dongzhe-span" staticdata="staticdata" v-bind:arrs="arrs" v-bind:msg.sync="msg" v-bind:my-message="item.age"></span></td></tr>',
+    data: function() {
+      console.log("$children:")
+      console.log(this.$children)
+      return {
+        items: [{
+          name: "dongzhe",
+          age: 22
+        }, {
+          name: "xiuxinyu",
+          age: 26
+        }, {
+          name: "chuxiuhong",
+          age: 29
+        }],
+        msg: "span",
+        myMessage: "sdsdsd",
+        arrs: [2, 3, 4],
+        "staticdata": "aaa",
+        // prop 默认是单向绑定 父组件的变化影响子组件 子组件的变化不会影响父组件
+        // 可以使用sync 和 once 显示的单向绑定和单次绑定
+      }
+    },
+    components: {
+      // 这个是在父组件模板template里面的 而不是在外面的标签的
+      "dongzhe-span": {
+        // 子模板可以使用prop的值 所有继承的值都是来自于父元素的 所以值的绑定也是来源于父模板的
+        template: "<span>{{staticdata}}</span><span v-for='arr in arrs'>{{arr}}</span><span>{{it}}</span><span v-on:click='spanClick'>dongzhe span is here {{msg}} {{myMessage}}</span>",
+        props: ["msg", "myMessage", "arrs", "staticdata"],
+        data: function() {
+          // console.log("$parent:")
+          // console.log(this.$parent);
+          // data中可以访问父组件的prop的元素
+          console.log(this.msg);
+          // data局部传参数 需要使用function
+          return {
+            it: "it"
+          }
+        },
+        methods: {
+          spanClick: function() {
+            // 注意比较添加了sync和没添加sync后的结果
+            // 双向绑定会把子组件的 msg 属性同步回父组件的 parentMsg 属性
+            // 注意如果 prop 是一个对象或数组，是按引用传递。在子组件内修改它会影响父组件的状态，不管是使用哪种绑定类型
+            this.msg = this.msg + "change";
+          }
+        }
+      }
+    }
+  });
+  new Vue({
+    el: "#table"
+  })
+
+
+  // Prop-验证
+  // http://cn.vuejs.org/guide/components.html#Prop-验证
+</script>
+</html>

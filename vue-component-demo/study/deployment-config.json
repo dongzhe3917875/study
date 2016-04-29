@@ -1,0 +1,9 @@
+{
+  "type": "sftp",
+  "host": "10.16.77.117",
+  "username": "stack",
+  "password": "verybadpass",
+  "port": 22,
+  "remotePath": "/usr/local/opt/gulpstudy/study",
+  "uploadOnSave": true
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dynamic</title>
+  <script src="https://cdn.jsdelivr.net/vue/latest/vue.js"></script>
+  <script src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+</head>
+<body>
+  <template id="home">
+    <div class="home">this is home</div>
+    <div>this is home area</div>
+    <slot name="common">this is common area</slot>
+    <footer>this is home footer</footer>
+  </template>
+  <template id="posts">
+    <div class="home">this is posts</div>
+    <div>this is posts area</div>
+    <slot name="common">this is common area</slot>
+    <footer>this is posts footer</footer>
+  </template>
+  <template id="archive">
+    <div class="home">this is archive</div>
+    <div>this is archive area</div>
+    <slot name="common">this is common area</slot>
+    <footer>this is archive footer</footer>
+  </template>
+  <div id="show">
+    <component :is="currentView" keep-alive>
+      <div slot="common">{{common}}</div>
+    </component>
+    <select name="" id="" v-model="selected" v-on:change="change">
+      <option value="my-home" selected>my-home</option>
+      <option value="my-posts" selected>my-posts</option>
+      <option value="my-archive" selected>my-archive</option>
+    </select>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: "#show",
+    data: {
+      currentView: "my-home",
+      selected: "",
+      common: "common 1234567"
+    },
+    components: {
+      "my-home" : {
+        template: "#home"
+      },
+      "my-posts" : {
+        template: "#posts",
+        activate: function() {
+          var self = this;
+          window.setTimeout(function() {
+            self.common = Math.random();
+          }, 2000)
+        }
+      },
+      "my-archive" : {
+        template: "#archive"
+      }
+    },
+    methods: {
+      change: function() {
+        console.log(this.selected);
+        this.currentView = this.selected;
+      }
+    }
+  });
+</script>
+</html>
