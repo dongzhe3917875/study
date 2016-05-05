@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>component-demo</title>
+  <link rel="stylesheet" href="modal.css">
+  <script src="https://cdn.jsdelivr.net/vue/latest/vue.js"></script>
+</head>
+<body>
+  <template id="modal">
+    <div class="modal-mask" v-show="show" transition="modal">
+      <div class="modal-wrapper">
+        <div class="modal-container">
+          <modal-header v-bind:name1="name"></modal-header>
+          <div class="modal-body">
+            <input type="text" v-bind:data-id="showit" v-model="now" v-on:keyup="keyup">
+            <slot name="body"></slot>
+          </div>
+          <modal-footer v-bind:foot="foot" v-bind:show.sync="show"></modal-footer>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="header">
+    <div class="modal-header"><h3>{{name1}}</h3></div>
+  </template>
+  <template id="footer">
+    <div class="modal-footer">
+      <!-- for循环 + if的用法 -->
+      <template v-for="content in foot">
+        <button class="{{content.className}}" v-if="content.className == 'close'" v-on:click="show=false">{{content.name}}</button>
+        <button class="{{content.className}}" v-else>{{content.name}}</button>
+      </template>
+      <!-- <button v-for="content in foot" class="{{content.className}}" v-on:click="show=false">{{content.name}}</button> -->
+    </div>
+  </template>
+  <div class="modal">
+    <!-- 父组件用show的名义将需要父组件的值showModal转入子组件 并实现了双向绑定-->
+    <!-- new Vue el的data的值可以传进去的 -->
+    <modal-wrapper v-bind:foot="close" v-ref:wrapper v-bind:show.sync="showModal" v-bind:name="selected">
+      <p slot="body">{{haha}}</p>
+    </modal-wrapper>
+    <select name="" id="" v-model="selected" v-on:change="change">
+      <option value="my-home" selected>my-home</option>
+      <option value="my-posts" selected>my-posts</option>
+      <option value="my-archive" selected>my-archive</option>
+    </select>
+    <div v-show="showModal">ssssssssssss</div>
+  </div>
+</body>
+
+
+<script>
+  Vue.component('modal-wrapper', {
+    template: "#modal",
+    props: ["show", "name", "foot"],
+    data: function() {
+      console.log(this.show, this.haha);
+      return {
+        showit: this.show,
+        now: ""
+      }
+    },
+    methods: {
+      keyup: function() {
+        this.showit = this.now + "haha";
+      }
+    },
+    components: {
+      "modal-header": {
+        props: ["name1"],
+        template: "#header"
+      },
+      "modal-footer": {
+        props: ["foot", "show"],
+        template: "#footer"
+      }
+    }
+  })
+  var vm = new Vue({
+    el: ".modal",
+    data: {
+      selected: "",
+      showModal: false,
+      haha: "haha",
+      close:[{
+        className: "close",
+        name: "关闭"
+      }, {
+        className: "make",
+        name: "确定"
+      }]
+    },
+    methods: {
+      change: function() {
+        console.log("sssssssss");
+        this.showModal = true;
+      }
+    }
+  })
+</script>
+</html>
