@@ -1,6 +1,9 @@
 h1.
   User List
-ul
+ul.maillist
   each user, i in userlist
     li
       a(href="mailto:#{user.email}")= user.username
+      input.check(type="checkbox")
+      span x
+button 发送邮件
