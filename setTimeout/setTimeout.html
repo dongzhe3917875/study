@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <table border=1>
+      <tr><td><button id='do'>Do long calc - bad status!</button></td>
+          <td><div id='status'>Not Calculating yet.</div></td>
+      </tr>
+      <tr><td><button id='do_ok'>Do long calc - good status!</button></td>
+          <td><div id='status_ok'>Not Calculating yet.</div></td>
+      </tr>
+  </table>
+<script>
+
+function long_running(status_div) {
+
+  var result = 0;
+  for (var i = 0; i < 1000; i++) {
+      for (var j = 0; j < 700; j++) {
+          for (var k = 0; k < 300; k++) {
+              result = result + i + j + k;
+          }
+      }
+  }
+  document.querySelector(status_div).innerHTML = 'calclation done' ;
+}
+
+
+// ,就不得不说浏览器的另外一个引擎—GUI渲染引擎. 在js中渲染操作也是异步的.比如dom操作的代码会在事件队列中生成一个任务,
+// js执行到这个任务时就会去调用GUI引擎渲染.
+
+document.querySelector('#do').onclick = function () {
+  // 而造成这样结果的原因正是js的事件循环单线程机制.dom操作是异步的,for循环计算是同步的.异步操作都会被延迟到同步计算之后执行.
+  // 也就是代码的执行顺序变了.calculating….和calclation done的dom操作都被放到事件队列后面而且紧跟在一起,
+  document.querySelector('#status').innerHTML = 'calculating....';
+  long_running('#status');
+};
+
+document.querySelector('#do_ok').onclick = function () {
+  document.querySelector('#status_ok').innerHTML = 'calculating....';
+  window.setTimeout(function (){ long_running('#status_ok') }, 0);
+};
+
+</script>
+</body>
+</html>
