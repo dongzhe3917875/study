@@ -1,0 +1,21 @@
+{
+  "name": "study",
+  "description": "ERROR: No README data found!",
+  "main": "app.js",
+  "authors": [
+    "dongzhe <dongzhe@360.cn>"
+  ],
+  "license": "BSD",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "public/bower_components"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.3"
+  }
+}
