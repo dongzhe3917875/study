@@ -5,6 +5,7 @@ var app = express();
 var mongo = require('mongodb');
 var monk = require('monk');
 var routes = require('./routes/index');
+var test = require('./routes/test');
 // var newuser = require('./routes/newuser')
 var db = monk('localhost:27017/nodetest');
 // 使用这个router来配置路由
@@ -43,29 +44,33 @@ app.get('/', function(req, res) {
 //     next();
 //   }
 // });
-//
-// app.use(function(req, res, next) {
-//   if (req.url === "/about") {
-//     res.writeHead(200, {
-//       "Content-Type": "text/plain"
-//     });
-//     res.end("about page!\n");
-//   } else {
-//     next();
-//   }
-// });
-//
-// app.use(function(req, res, next) {
-//   res.writeHead(404, {
-//     "Content-Type": "text/plain"
-//   });
-//   res.end("404 error!\n");
-// });
+app.all("*", function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+  })
+  // app.use(function(req, res, next) {
+  //   if (req.url === "/about") {
+  //     res.writeHead(200, {
+  //       "Content-Type": "text/plain"
+  //     });
+  //     res.end("about page!\n");
+  //   } else {
+  //     next();
+  //   }
+  // });
+  //
+  // app.use(function(req, res, next) {
+  //   res.writeHead(404, {
+  //     "Content-Type": "text/plain"
+  //   });
+  //   res.end("404 error!\n");
+  // });
 
 
 app.use('/birds', birds);
 // 对同一个路径做不同的请求方法配置，如下，
 app.use('/', routes);
+app.use('/', test);
 app.route('/book')
   .get(function(req, res) {
     res.send('Get a random book');

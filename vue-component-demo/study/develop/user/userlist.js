@@ -29,4 +29,16 @@ $(document).ready(function() {
   }
   bindcheckbox(sendul, copyurl);
   bindcheckbox(copyurl, sendul);
+  $(".check").on("click", function() {
+    var sib = $(this).siblings("label");
+    sib.trigger("click");
+  })
+  $.ajax({
+    url: "/test",
+    dataType: "json",
+    type: "GET",
+    success: function(data) {
+      console.log(data);
+    }
+  })
 });
