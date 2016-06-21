@@ -34,11 +34,11 @@ $(document).ready(function() {
     sib.trigger("click");
   })
   $.ajax({
-    url: "/test",
-    dataType: "json",
+    url: "./test",
     type: "GET",
+    dataType: "json",
     success: function(data) {
-      console.log(data);
+      $(".hbstest").html(dzhappy.templates.create(data));
     }
   })
 });
