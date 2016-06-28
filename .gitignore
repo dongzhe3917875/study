@@ -1,0 +1,2 @@
+# 忽略dbg文件和dbg目录
+node_modules

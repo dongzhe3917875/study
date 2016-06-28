@@ -6,6 +6,12 @@ var mongo = require('mongodb');
 var monk = require('monk');
 var routes = require('./routes/index');
 var test = require('./routes/test');
+var http = require("http");
+
+
+// 引入socekt.io
+var server_http = http.Server(app);
+var io = require("socket.io")(server_http);
 // var newuser = require('./routes/newuser')
 var db = monk('localhost:27017/nodetest');
 // 使用这个router来配置路由
@@ -73,6 +79,8 @@ app.use('/', routes);
 app.use('/', test);
 app.route('/book')
   .get(function(req, res) {
+    // 可以使用sendfile来传输文件
+    // res.sendFile(__dirname + '/index.html');
     res.send('Get a random book');
   })
   .post(function(req, res) {
@@ -87,3 +95,110 @@ app.listen(3000, function() {
 })
 
 // 路由组件
+// socket.io demo
+var onlineUsers = {};
+var onlineCount = 0;
+io.on("connection", function(socket) {
+  var connected = "欢迎进入聊天！！"
+  var disconnected = "已经退出聊天"
+  console.log('a user connected');
+  // socket.on("disconnect", function() {
+  //   console.log('user disconnected');
+  // });
+  // socket.broadcast.emit(connected);
+  // io.emit('chat message', connected);
+  // socket.on("chat message", function(msg) {
+  // console.log("message from client: " + msg);
+  // 都看见
+  // io.emit('chat message', msg);
+  // 只有对方看见
+  // socket.broadcast.emit('chat message', msg);
+  // })
+
+  socket.on("login", function(obj) {
+    socket.name = obj.userid;
+    if (!onlineUsers.hasOwnProperty(obj.userid)) {
+      onlineUsers[obj.userid] = obj.username;
+      onlineCount++;
+    }
+
+    io.emit('login', {
+      onlineUsers: onlineUsers,
+      onlineCount: onlineCount,
+      user: obj
+    })
+    console.log(obj.username + '加入了聊天室');
+  })
+
+  socket.on('disconnect', function() {
+    //将退出的用户从在线列表中删除
+    if (onlineUsers.hasOwnProperty(socket.name)) {
+      //退出用户的信息
+      var obj = {
+        userid: socket.name,
+        username: onlineUsers[socket.name]
+      };
+
+      //删除
+      delete onlineUsers[socket.name];
+      //在线人数-1
+      onlineCount--;
+
+      //向所有客户端广播用户退出
+      io.emit('logout', {
+        onlineUsers: onlineUsers,
+        onlineCount: onlineCount,
+        user: obj
+      });
+      console.log(obj.username + '退出了聊天室');
+    }
+  });
+
+  socket.on("message", function(obj) {
+    //向所有客户端广播发布的消息
+    io.emit('message', obj);
+    console.log(obj.username + '说：' + obj.content);
+  })
+})
+
+
+server_http.listen(1741, function() {
+  console.log((new Date()) + ' Server is listening on port 1741');
+})
+
+// websocket demo
+var socket_server = http.createServer(function(request, response) {});
+socket_server.listen(1740, function() {
+    console.log((new Date()) + ' Server is listening on port 1740');
+  })
+  // 通过http建立websocket server
+var WebSocketServer = require('websocket').server;
+var wsServer = new WebSocketServer({
+  httpServer: socket_server
+});
+var connection;
+var timeID = null;
+wsServer.on('request', function(req) {
+  // 建立WebSocket连接connection
+  connection = req.accept('echo-protocol', req.origin);
+  clearInterval(timeID);
+  connection.sendUTF("dongzhe is a very good man");
+
+  var timeID = setInterval(function() {
+      console.log(Math.random())
+      connection.sendUTF(Math.random());
+    }, 2000)
+    // 填写message信息
+  connection.on("message", function(message) {
+    console.log(JSON.stringify(JSON.parse(message.utf8Data)));
+    if (JSON.parse(message.utf8Data).clear_interval) {
+      clearInterval(timeID);
+    }
+    var msgString = message.utf8Data + " dongzhe is good";
+    connection.sendUTF(msgString);
+  })
+
+  connection.on('close', function(reasonCode, description) {
+    console.log(connection.remoteAddress + ' disconnected.');
+  });
+})
