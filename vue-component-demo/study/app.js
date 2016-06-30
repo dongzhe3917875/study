@@ -5,6 +5,26 @@ var app = express();
 var mongo = require('mongodb');
 var monk = require('monk');
 var routes = require('./routes/index');
+var cookieParser = require('cookie-parser');
+var flash = require("connect-flash");
+var settings = require("./setting");
+
+var session = require("express-session");
+var MongoStore = require("connect-mongo")(session);
+
+app.use(session({
+  secret: settings.cookieSerect,
+  key: settings.db,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 30
+  },
+  store: new MongoStore({
+    db: settings.db,
+    host: settings.host,
+    port: settings.port
+  })
+}));
+
 var test = require('./routes/test');
 var http = require("http");
 
@@ -29,11 +49,14 @@ app.use(function(req, res, next) {
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({
   extended: true
 })); // for parsing application/x-www-form-urlencoded
+
+app.use(cookieParser());
 app.get('/', function(req, res) {
   res.render("index", {
     name: "dongzhe",
