@@ -3,8 +3,7 @@ var router = express.Router();
 var monk = require('monk');
 var user = require("../controler/user");
 var demo = require("../controler/demo");
-var db = monk('localhost:27017/nodetest');
-
+var db = monk('localhost:27017/nodetest');;
 router.get('/userlist', user.userlist(db));
 router.get('/newuser', user.newuser);
 router.post('/adduser', user.adduser(db));
