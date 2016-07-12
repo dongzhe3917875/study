@@ -5,69 +5,32 @@ div.wrapper
   div.content-area
     div.nav-bar
       ul.nav-area
-        li.nav-item.register 注册
-        li.nav-item.login.active 登录
+        li.nav-item.register.active 
+          a(href='/socketIO_chat/register') 注册
+        li.nav-item.login 
+          a(href='/socketIO_chat/login') 登录
     div.content
-      div.form_content.logout
-        div.register_content
-          div.row-item
-            label.item-label 用户名称：
-            div.item-box.input-validate-box
-              div
-                input.form-control.input-validate#username(type="text")
-                span.input-stars
-                i.fa
-              div.info.check-info
-                span.tip
-          div.row-item
-            label.item-label 密码：
-            div.item-box.input-validate-box
-              div
-                input.form-control.input-validate#password(type="password")
-                span.input-stars
-                i.fa
-              div.info.check-info
-                span.tip
-          div.row-item
-            label.item-label 确认密码：
-            div.item-box.input-validate-box
-              div
-                input.form-control.input-validate#makesurepassword(type="password")
-                span.input-stars
-                i.fa
-              div.info.check-info
-                span.tip
-          div.row-item
-            label.item-label 邮箱:
-            div.item-box.input-validate-box
-              div
-                input.form-control.input-validate#email(type="text")
-                span.input-stars
-                i.fa
-              div.info.check-info
-                span.tip
-          button.btn.btn-success.logout_finish.disabled(type="button") 注册
-      div.form_content.login.show
-        div.login_content
-          div.row-item
-            label.item-label 用户名称：
-            div.item-box.input-validate-box
-              div
-                input.form-control.input-validate#lg_username(type="text")
-                span.input-stars
-                i.fa
-              div.info.check-info
-                span.tip
-          div.row-item
-            label.item-label 密码：
-            div.item-box.input-validate-box
-              div
-                input.form-control.input-validate#lg_password(type="password")
-                span.input-stars
-                i.fa
-              div.info.check-info
-                span.tip
-          button.btn.btn-success.login_finish.disabled(type="button") 登录
+        div.form_content.login.show
+          div.login_content
+            div.row-item
+              label.item-label 用户名称：
+              div.item-box.input-validate-box
+                div
+                  input.form-control.input-validate#lg_username(type="text")
+                  span.input-stars
+                  i.fa
+                div.info.check-info
+                  span.tip
+            div.row-item
+              label.item-label 密码：
+              div.item-box.input-validate-box
+                div
+                  input.form-control.input-validate#lg_password(type="password")
+                  span.input-stars
+                  i.fa
+                div.info.check-info
+                  span.tip
+            button.btn.btn-success.login_finish.disabled(type="button") 登录
 script(src="/bower_components/jquery/dist/jquery.min.js")
 script(src="/javascripts/jquery_validate.js")
 script(src="/javascripts/socket_chat_login.js")

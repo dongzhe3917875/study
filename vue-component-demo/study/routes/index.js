@@ -10,4 +10,7 @@ router.post('/adduser', user.adduser(db));
 router.get('/socket_chat', demo.chat);
 router.get('/socketIO_chat', demo.iochat);
 router.get('/socketIO_chat/login', demo.iochat_login);
+router.get('/socketIO_chat/register', demo.iochat_register);
+
+router.post("/reg", demo.register);
 module.exports = router;

@@ -1,15 +1,15 @@
 $(document).ready(function() {
   // Stuff to do as soon as the DOM is ready
-  $(".nav-item").on("click", function() {
-    var index = $(this).index();
-    $(this).addClass("active").siblings().removeClass("active");
-    $(".form_content").eq(index).addClass("show").siblings().removeClass(
-      "show");
-    var area_input = $(".form_content").eq(index).find("input");
-    area_input.val("");
-    area_input.siblings("i").removeClass().addClass("fa");
-    area_input.parent().siblings().find(".tip").text("");
-  })
+  // $(".nav-item").on("click", function() {
+  //   var index = $(this).index();
+  //   $(this).addClass("active").siblings().removeClass("active");
+  //   $(".form_content").eq(index).addClass("show").siblings().removeClass(
+  //     "show");
+  //   var area_input = $(".form_content").eq(index).find("input");
+  //   area_input.val("");
+  //   area_input.siblings("i").removeClass().addClass("fa");
+  //   area_input.parent().siblings().find(".tip").text("");
+  // })
   var registerPassword = $("#password");
   var registerPasswordMaksure = $("#makesurepassword");
   var lg_password = $("#lg_password");
@@ -63,4 +63,40 @@ $(document).ready(function() {
     option: registerOption,
     makeBtn: $(".logout_finish")
   });
+
+  var ajax_func = function(obj) {
+    var defaultOption = {
+      url: "",
+      type: "POST",
+      dataType: "json",
+      data: {},
+      success: function(data) {
+
+      }
+    }
+    var obj = $.extend(true, {},
+      defaultOption, obj);
+    $.ajax(obj);
+  }
+
+  $(".logout_finish").on("click", function() {
+    var obj = {
+      url: "/reg",
+      data: {
+        name: $("#username").val(),
+        password: $("#password").val(),
+        password_re: $("#makesurepassword").val(),
+        email: $("#email").val()
+      },
+      success: function(data) {
+        var message = data.error || data.success;
+        alert(message);
+        if (data.success) {
+          $("li.login").trigger("click");
+        }
+      }
+    }
+    ajax_func.call(null, obj);
+  })
+
 });
