@@ -2,7 +2,9 @@ exports.chat = function(req, res) {
   res.render("socket_chat", {});
 }
 exports.iochat = function(req, res) {
-  res.render("socketIO_chat", {});
+  res.render("socketIO_chat", {
+    user: req.session.user
+  });
 }
 exports.iochat_login = function(req, res) {
   res.render("socketIO_chat_login", {});
@@ -10,7 +12,11 @@ exports.iochat_login = function(req, res) {
 exports.iochat_register = function(req, res) {
   res.render("socketIO_chat_register", {});
 }
-
+exports.home = function(req, res) {
+  res.render("socketIO_chat_home", {
+    user: req.session.user
+  });
+}
 var crypto = require('crypto');
 var User = require('../models/user.js');
 exports.register = function(req, res) {
@@ -44,7 +50,6 @@ exports.register = function(req, res) {
     } else {
 
       newUser.save(function(err, user) {
-        console.log("456");
 
         if (err) {
           return res.send({
@@ -53,7 +58,7 @@ exports.register = function(req, res) {
         }
         console.log(JSON.stringify(user));
         // 将用户信息放到session里面
-        req.session.user = user;
+        // req.session.user = user;
         req.flash("success", "注册成功");
         // res.location("socketIO_chat/login");
         // And forward to success page
@@ -64,5 +69,40 @@ exports.register = function(req, res) {
         })
       })
     }
+  })
+}
+exports.login = function(req, res) {
+  var md5 = crypto.createHash("md5");
+  var password = md5.update(req.body.password).digest("hex");
+  // 验证用户信息
+  User.get(req.body.name, function(err, user) {
+    if (err) {
+      return res.send({
+        error: "数据库系统繁忙"
+      })
+    }
+    if (!user) {
+      return res.send({
+        error: "用户名不存在"
+      })
+    }
+    if (user.password != password) {
+      return res.send({
+        error: "密码不正确"
+      })
+    }
+    req.session.user = user;
+    return res.send({
+      success: "登录成功",
+      location: "/socketIO_chat/home"
+        // location: "/socketIO_chat"
+    })
+  })
+}
+exports.logout = function(req, res) {
+  req.session.user = null;
+  return res.send({
+    success: "退出账户成功",
+    location: "/socketIO_chat/login"
   })
 }

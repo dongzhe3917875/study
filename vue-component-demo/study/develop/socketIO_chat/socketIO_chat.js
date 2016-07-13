@@ -1,4 +1,18 @@
 (function($) {
+  var ajax_func = function(obj) {
+    var defaultOption = {
+      url: "",
+      type: "POST",
+      dataType: "json",
+      data: {},
+      success: function(data) {
+
+      }
+    }
+    var obj = $.extend(true, {},
+      defaultOption, obj);
+    $.ajax(obj);
+  }
   var d = document;
   var w = window;
   var p = parseInt,
@@ -17,8 +31,20 @@
       w.scrollTo(0, d.getElementById("message").clientHeight);
     },
     logout: function() {
-      //this.socket.disconnect();
-      location.reload();
+      $(".logout").on("click", function() {
+        this.socket.disconnect();
+        var obj = {
+          url: "/logout",
+          success: function(data) {
+            var message = data.error || data.success;
+            alert(message);
+            if (data.success) {
+              window.location.href = data.location;
+            }
+          }
+        }
+        ajax_func.call(null, obj);
+      }.bind(this))
     },
     //提交聊天消息内容
     submit: function() {
@@ -61,16 +87,17 @@
       html += user.username;
       html += (action == 'login') ? ' 加入了聊天室' : ' 退出了聊天室';
       html += '</div>';
-      $("<section></section>").addClass("system J-mjrlinkWrap J-cutMsg").html(
-        html).appendTo(this.msnObj);
+      $("<section></section>").addClass("system J-mjrlinkWrap J-cutMsg")
+        .html(
+          html).appendTo(this.msnObj);
       this.scrollToBottom();
     },
     //第一个界面用户提交用户名
     usernameSubmit: function() {
-      var username = d.getElementById("username").value;
+      var username = $("#username").text();
       if (username != "") {
-        d.getElementById("username").value = '';
-        d.getElementById("loginbox").style.display = 'none';
+        $("#username").text("");
+        $("#username").hide();
         d.getElementById("chatbox").style.display = 'block';
         this.init(username);
       }
@@ -134,7 +161,7 @@
       this.scrollToBottom();
       //连接websocket后端服务器
       this.socket = io.connect('ws://10.16.77.117:1741');
-
+      this.logout();
       //告诉服务器端有用户登录
       this.socket.emit('login', {
         userid: this.userid,
@@ -195,6 +222,7 @@
   $("input.submitt").on("click", function() {
     CHAT.usernameSubmit();
   })
+  CHAT.usernameSubmit();
   $("#mjr_send").on("click", function() {
     CHAT.submit();
   })

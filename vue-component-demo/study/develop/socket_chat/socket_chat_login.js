@@ -93,10 +93,27 @@ $(document).ready(function() {
         alert(message);
         if (data.success) {
           $("li.login").trigger("click");
+          window.location.href = data.location;
         }
       }
     }
     ajax_func.call(null, obj);
   })
-
+  $(".login_finish").on("click", function() {
+    var obj = {
+      url: "/login",
+      data: {
+        name: $("#lg_username").val(),
+        password: $("#lg_password").val()
+      },
+      success: function(data) {
+        var message = data.error || data.success;
+        alert(message);
+        if (data.success) {
+          window.location.href = data.location;
+        }
+      }
+    }
+    ajax_func.call(null, obj);
+  })
 });
