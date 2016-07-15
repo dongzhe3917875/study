@@ -8,7 +8,7 @@ var routes = require('./routes/index');
 var cookieParser = require('cookie-parser');
 var flash = require("connect-flash");
 var settings = require("./setting");
-
+var blog = require('./routes/blog');
 var session = require("express-session");
 var MongoStore = require("connect-mongo")(session);
 
@@ -100,6 +100,7 @@ app.use('/birds', birds);
 // 对同一个路径做不同的请求方法配置，如下，
 app.use('/', routes);
 app.use('/', test);
+app.use('/blog', blog);
 app.route('/book')
   .get(function(req, res) {
     // 可以使用sendfile来传输文件

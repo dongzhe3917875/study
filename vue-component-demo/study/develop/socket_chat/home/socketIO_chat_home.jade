@@ -1,7 +1,10 @@
 link(rel='stylesheet', href="/stylesheets/socketIO_chat_home.css", type="text/css")
-div.header
-  span.name Hi, #{user.name} 你好！
-  span.logout 退出
+div.body
+  div.header
+    span.name Hi, #{user.name} 你好！
+    span.logout 退出
+  div.content
+    a.post(href="/blog/post") 创建一篇文章
 script(src="/bower_components/jquery/dist/jquery.min.js")
 script(src="/javascripts/jquery_validate.js")
 script(src="/javascripts/socketIO_chat_home.js")
