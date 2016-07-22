@@ -9,6 +9,7 @@ var cookieParser = require('cookie-parser');
 var flash = require("connect-flash");
 var settings = require("./setting");
 var blog = require('./routes/blog');
+var operate_svg = require('./routes/operate_svg');
 var session = require("express-session");
 var MongoStore = require("connect-mongo")(session);
 
@@ -101,6 +102,7 @@ app.use('/birds', birds);
 app.use('/', routes);
 app.use('/', test);
 app.use('/blog', blog);
+app.use('/', operate_svg);
 app.route('/book')
   .get(function(req, res) {
     // 可以使用sendfile来传输文件

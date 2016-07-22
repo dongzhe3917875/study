@@ -1,0 +1,33 @@
+link(rel='stylesheet', href="/stylesheets/operate_svg.css", type="text/css")
+script(src="/javascripts/raphael.js")
+script(src="bower_components/jquery/dist/jquery.min.js")
+script(src="/javascripts/flowchart.js")
+div
+  textarea#code(style="width: 50%;", rows="11").
+    st=>start: 渲染数据
+    e=>end:>http://www.google.com
+    op1=>operation: 进行右侧操作
+    op2=>operation: 进入轮询(暂态)
+    sub1=>subroutine: 进行数据源更新
+    sub2=>subroutine: 根据稳态数据完成操作状态更新
+    cond=>condition: 是否在当前页?
+    sub3=>subroutine: 进行数据源更新和视图更新
+    io=>inputoutput: 进行数据源更新和视图更新
+    cond1=>condition: 是否进入稳态
+    cond2=>condition: 是否在当前页?
+    sub4=>subroutine: 数据源以及当前视图操作更新
+    sub5=>subroutine: 数据源操作更新
+    st->op1->op2->cond
+    cond(yes)->sub3->cond1(yes)->sub2->cond2
+    cond2(yes)->sub4->e
+    cond2(no)->sub5->e
+    cond(no)->sub1(right)->cond1(no)->op2
+div
+  button#run(type="button") Run
+
+div#canvas
+div.modal
+  div.showImage
+    img(src="/images/st.png")
+    span.close X
+script(src="/javascripts/operate_svg.js")

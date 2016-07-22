@@ -21,6 +21,11 @@ gulp.task("jade", function() {
     .pipe(flatten())
     .pipe(gulp.dest("views"))
 })
+gulp.task("image", function() {
+  return gulp.src("develop/**/*.png")
+    .pipe(flatten())
+    .pipe(gulp.dest("public/images"))
+})
 gulp.task('templates', function() {
   gulp.src('develop/**/*.hbs')
     .pipe(handlebars())
@@ -48,8 +53,9 @@ gulp.task("start", function() {
   gulp.watch("develop/**/*.js", ['js']);
   gulp.watch("develop/**/*.jade", ['jade']);
   gulp.watch("develop/**/*.hbs", ['templates']);
+  gulp.watch("develop/**/*.png", ['image']);
 })
 
-gulp.task("default", ['less', 'js', 'jade', 'templates'], function() {
+gulp.task("default", ['less', 'js', 'jade', 'templates', 'image'], function() {
   gulp.start('start');
 })
