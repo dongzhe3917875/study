@@ -1,3 +1,4 @@
+var Post = require("../models/blog.js");
 exports.chat = function(req, res) {
   res.render("socket_chat", {});
 }
@@ -13,8 +14,14 @@ exports.iochat_register = function(req, res) {
   res.render("socketIO_chat_register", {});
 }
 exports.home = function(req, res) {
-  res.render("socketIO_chat_home", {
-    user: req.session.user
+  Post.get(null, function(err, posts) {
+    if (err) {
+      posts = []
+    }
+    res.render("socketIO_chat_home", {
+      user: req.session.user,
+      posts: posts
+    });
   });
 }
 var crypto = require('crypto');

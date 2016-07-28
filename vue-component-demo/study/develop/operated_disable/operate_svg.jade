@@ -4,24 +4,41 @@ script(src="bower_components/jquery/dist/jquery.min.js")
 script(src="/javascripts/flowchart.js")
 div
   textarea#code(style="width: 50%;", rows="11").
-    st=>start: 渲染数据
+    st=>start: 加载数据
     e=>end:>http://www.google.com
     op1=>operation: 进行右侧操作
     op2=>operation: 进入轮询(暂态)
-    sub1=>subroutine: 进行数据源更新
+    sub1=>subroutine: 进行数据源模板更新
     sub2=>subroutine: 根据稳态数据完成操作状态更新
     cond=>condition: 是否在当前页?
-    sub3=>subroutine: 进行数据源更新和视图更新
-    io=>inputoutput: 进行数据源更新和视图更新
+    sub3=>subroutine: 进行数据源模板更新
+    io=>inputoutput: 扫描所有暂态虚机（加入本地存储）
+    io2=>inputoutput: 渲染当前页
+    io3=>inputoutput: 虚机数据不再重复加入
+    io4=>inputoutput: 虚机数据加入本地存储
     cond1=>condition: 是否进入稳态
     cond2=>condition: 是否在当前页?
-    sub4=>subroutine: 数据源以及当前视图操作更新
+    cond3=>condition: 是否加入过本地存储？
+    cond4=>condition: 当前虚机视图是否曾经渲染过？
+    cond5=>condition: 当前虚机视图是否曾经渲染过？
+    sub4=>subroutine: 数据源模板更新
     sub5=>subroutine: 数据源操作更新
-    st->op1->op2->cond
+    sub6=>subroutine: 对应数据条目更新
+    sub7=>subroutine: 对应数据条目更新
+    sub10=>subroutine: 进行数据源模板更新
+    sub8=>subroutine: 当前视图操作更新
+    sub9=>subroutine: 当前视图操作更新
+    st->io->io2->cond3
+    cond3(no)->io4->op1->op2->cond
+    cond3(yes)->io3->op2
     cond(yes)->sub3->cond1(yes)->sub2->cond2
     cond2(yes)->sub4->e
-    cond2(no)->sub5->e
-    cond(no)->sub1(right)->cond1(no)->op2
+    cond2(no)->cond5
+    cond5(yes)->sub10->sub9->e
+    cond5(no)->sub7->sub4->sub9
+    cond(no)->cond4
+    cond4(yes)->sub1->sub8->cond1(no)->op2
+    cond4(no)->sub6->sub3->sub8
 div
   button#run(type="button") Run
 

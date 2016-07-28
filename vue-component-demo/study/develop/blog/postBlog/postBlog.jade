@@ -3,13 +3,19 @@ link(rel='stylesheet', href="/stylesheets/postBlog.css", type="text/css")
 div.postContext
   form.form-horizontal
     div.form-group
-      lable.control-label.col-sm-2(for="title") 标题：
-      div.col-sm-10
+      lable.control-label.col-sm-1(for="title") 标题：
+      div.col-sm-5
         input(placeholder="请填入标题").form-control#title
     div.form-group
-      lable.control-label.col-sm-2(for="context") 正文：
-      div.col-sm-10
+      lable.control-label.col-sm-1(for="context") 正文：
+      div.col-sm-5
         textarea(placeholder="请开始写正文",rows="30").form-control#context
+      div.col-sm-5.showhtml
+        
     div.form-group
       div.col-sm-offset-2.col-sm-10
-        button.btn.btn-success 提交文章
+        button.btn.btn-success.post 提交文章
+
+script(src="/bower_components/jquery/dist/jquery.min.js")
+script(src="https://rawgit.com/showdownjs/showdown/develop/dist/showdown.min.js")
+script(src="/javascripts/postBlog.js")
