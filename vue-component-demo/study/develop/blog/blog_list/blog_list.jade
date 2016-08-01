@@ -5,13 +5,13 @@ div.body
     span.name Hi, #{user.name} 你好！
     span.logout 退出
   div.content
-    a.btn.btn-warning.post(href="/blog/post", target="_blank") 创建一篇文章
+    //- a.btn.btn-warning.post(href="/blog/post", target="_blank") 创建一篇文章
     div.context_wrapper
       div.sidebar
         ul
           each item, i in posts
             li
-              a(href="/blog/#{item.name}/#{item.time.day}/#{item.title}") #{item.title}(#{item.name})
+              a(href="/blog/#{item.name}/#{item.time.day}/#{item.title}") #{item.title}
       div.sidebar_right
         p in 
       div.context
@@ -20,8 +20,6 @@ div.body
             h4 
               a(href="/blog/#{item.name}/#{item.time.day}/#{item.title}") #{item.title}
             p.info 
-              作者：
-              a(href="/blog/#{item.name}") #{item.name}；
               日期：
               #{item.time.minute}
             div
@@ -30,5 +28,4 @@ div.body
                 a.seeAll(href="/blog/#{item.name}/#{item.time.day}/#{item.title}") 查看全文
             div.line
 script(src="/bower_components/jquery/dist/jquery.min.js")
-//- script(src="/javascripts/jquery_validate.js")
 script(src="/javascripts/socketIO_chat_home.js")

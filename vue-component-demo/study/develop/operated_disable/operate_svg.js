@@ -78,10 +78,10 @@ window.onload = function() {
       $(".flowchart").removeClass("current");
       $(this).addClass("current");
       $(".current+text").attr("fill", "green");
-      var id = this.id;
-      console.log(id);
-      $(".showImage img").attr("src", "/images/" + id + ".png");
-      $(".modal").show();
+      // var id = this.id;
+      // console.log(id);
+      // $(".showImage img").attr("src", "/images/" + id + ".png");
+      // $(".modal").show();
     })
     $(".close").on("click", function() {
       $(".modal").hide();

@@ -1,4 +1,5 @@
 var Post = require('../models/blog.js');
+var User = require('../models/user.js');
 exports.post = function(req, res) {
   res.render("postBlog", {})
 }
@@ -6,7 +7,8 @@ exports.post = function(req, res) {
 exports.post_blog = function(req, res) {
   res.header("Content-Type", "application/json;charset=utf-8");
   var currentUser = req.session.user;
-  var post = new Post(currentUser.name, req.body.title, req.body.post);
+  var post = new Post(currentUser.name, req.body.title, req.body.subject, req
+    .body.post);
   console.log(post);
   post.save(function(err) {
     if (err) {
@@ -17,6 +19,49 @@ exports.post_blog = function(req, res) {
     return res.send({
       success: "发表成功！",
       location: "/socketIO_chat/home"
+    })
+  })
+}
+
+exports.upload = function(req, res, next) {
+  // res.header("Content-Type", "application/json;charset=utf-8");
+  console.log("****")
+  console.log(req.file);
+  console.log("****")
+  return res.send({
+    success: "上传成功",
+    path: req.file.filename
+  })
+}
+
+exports.list = function(req, res) {
+  User.get(req.params.name, function(err, user) {
+    if (!user) {
+      res.redirect('/socketIO_chat/home');
+    }
+    Post.getAll(user.name, function(err, posts) {
+      if (err) {
+        return res.redirect('/socketIO_chat/home');
+      }
+      res.render("blog_list", {
+        user: req.session.user,
+        posts: posts
+      });
+    })
+  })
+}
+exports.listone = function(req, res) {
+  Post.getOne(req.params.name, req.params.day, req.params.title, function(err,
+    post) {
+    if (err) {
+      return res.send({
+        error: "error"
+      })
+    }
+    res.render('article', {
+      user: req.session.user,
+      title: req.params.title,
+      post: post
     })
   })
 }

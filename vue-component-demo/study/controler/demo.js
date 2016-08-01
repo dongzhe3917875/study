@@ -14,7 +14,7 @@ exports.iochat_register = function(req, res) {
   res.render("socketIO_chat_register", {});
 }
 exports.home = function(req, res) {
-  Post.get(null, function(err, posts) {
+  Post.getAll(null, function(err, posts) {
     if (err) {
       posts = []
     }

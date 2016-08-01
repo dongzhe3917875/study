@@ -1,0 +1,17 @@
+link(rel='stylesheet', href="/stylesheets/socketIO_chat_home.css", type="text/css")
+link(rel='stylesheet', href="/bower_components/bootstrap/dist/css/bootstrap.css", type="text/css")
+div.body
+  div.header
+    span.name Hi, #{user.name} 你好！
+    span.logout 退出
+  div.content
+    div.context_wrapper 
+      div.context
+          h4 #{title}
+          p.info 
+            日期：
+            #{post.time.minute}
+          div
+            !{post.post}
+script(src="/bower_components/jquery/dist/jquery.min.js")
+script(src="/javascripts/socketIO_chat_home.js")

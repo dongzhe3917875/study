@@ -1,10 +1,11 @@
 var mongodb = require("./db.js");
 var markdown = require("markdown").markdown;
 
-function Post(name, title, post) {
+function Post(name, title, subject, post) {
   this.name = name;
   this.title = title;
   this.post = post;
+  this.subject = subject;
 }
 
 module.exports = Post;
@@ -14,9 +15,9 @@ Post.prototype.save = function(callback) {
   var time = {
     date: date,
     year: date.getFullYear(),
-    month: date.getFullYear() + " - " + (date.getMonth() + 1),
-    day: date.getFullYear() + " - " + (date.getMonth() + 1) + " - " + date.getDate(),
-    minute: date.getFullYear() + " - " + (date.getMonth() + 1) + " - " +
+    month: date.getFullYear() + "-" + (date.getMonth() + 1),
+    day: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(),
+    minute: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" +
       date.getDate() + " " + date.getHours() + ":" + (date.getMinutes() <
         10 ? '0' + date.getMinutes() : date.getMinutes())
   }
@@ -25,6 +26,7 @@ Post.prototype.save = function(callback) {
     name: this.name,
     time: time,
     title: this.title,
+    subject: this.subject,
     post: this.post
   }
 
@@ -45,12 +47,14 @@ Post.prototype.save = function(callback) {
           return callback(err);
         }
         callback(null);
+        mongodb.close();
       });
     });
   });
 }
 
-Post.get = function(name, callback) {
+Post.getAll = function(name, callback) {
+
   mongodb.open(function(err, db) {
     if (err) {
       return callback(err)
@@ -73,11 +77,40 @@ Post.get = function(name, callback) {
         }
 
         //支持markdown
-        console.log(JSON.stringify(markdown))
-        docs.forEach(function(ele) {
-          ele.post = markdown.toHTML(ele.post);
-        })
+        // console.log(JSON.stringify(markdown))
+        // docs.forEach(function(ele) {
+        //   ele.post = markdown.toHTML(ele.post);
+        // })
         callback(null, docs);
+        mongodb.close();
+      })
+    });
+  });
+}
+
+
+Post.getOne = function(name, day, title, callback) {
+
+  mongodb.open(function(err, db) {
+    if (err) {
+      return callback(err)
+    }
+    db.collection("posts", function(err, collection) {
+      if (err) {
+        mongodb.close();
+        return callback(err);
+      }
+      console.log(name, day, title)
+      collection.findOne({
+        name: name,
+        "time.day": day,
+        title: title
+      }, function(err, doc) {
+        if (err) {
+          return callback(err);
+        }
+        callback(null, doc);
+        mongodb.close();
       })
     });
   });

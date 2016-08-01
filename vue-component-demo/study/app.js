@@ -13,6 +13,23 @@ var operate_svg = require('./routes/operate_svg');
 var session = require("express-session");
 var MongoStore = require("connect-mongo")(session);
 
+
+// var storage = multer.diskStorage({
+//   destination: function(req, file, cb) {
+//     cb(null, './public/images')
+//   },
+//   filename: function(req, file, cb) {
+//     console.log(file.originalname)
+//     cb(null, file.originalname)
+//   }
+// });
+// var upload = multer({
+//   storage: storage
+// });
+// var cpUpload = upload.any();
+// app.use(cpUpload);
+
+
 app.use(session({
   secret: settings.cookieSerect,
   key: settings.db,
@@ -25,7 +42,6 @@ app.use(session({
     port: settings.port
   })
 }));
-
 var test = require('./routes/test');
 var http = require("http");
 
