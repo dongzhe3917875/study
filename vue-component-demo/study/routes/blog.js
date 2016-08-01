@@ -23,5 +23,9 @@ router.get('/:name', checkLogin);
 router.get('/:name', blog.list);
 router.get('/:name/:day/:title', checkLogin);
 router.get('/:name/:day/:title', blog.listone);
+router.get('/:name/:day/:title/edit', checkLogin);
+router.get('/:name/:day/:title/edit', blog.edit);
+router.post('/:name/:day/:title/update', checkLogin);
+router.post('/:name/:day/:title/update', blog.update_post);
 
 module.exports = router;

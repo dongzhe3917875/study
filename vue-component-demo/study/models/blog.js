@@ -1,11 +1,12 @@
 var mongodb = require("./db.js");
 var markdown = require("markdown").markdown;
 
-function Post(name, title, subject, post) {
+function Post(name, title, markdown, subject, post) {
   this.name = name;
   this.title = title;
   this.post = post;
   this.subject = subject;
+  this.markdown = markdown;
 }
 
 module.exports = Post;
@@ -27,7 +28,8 @@ Post.prototype.save = function(callback) {
     time: time,
     title: this.title,
     subject: this.subject,
-    post: this.post
+    post: this.post,
+    markdown: this.markdown
   }
 
   mongodb.open(function(err, db) {
@@ -110,6 +112,39 @@ Post.getOne = function(name, day, title, callback) {
           return callback(err);
         }
         callback(null, doc);
+        mongodb.close();
+      })
+    });
+  });
+}
+
+Post.update = function(name, day, title, post, callback) {
+
+  mongodb.open(function(err, db) {
+    if (err) {
+      return callback(err)
+    }
+    db.collection("posts", function(err, collection) {
+      if (err) {
+        mongodb.close();
+        return callback(err);
+      }
+      console.log(name, day, title)
+      collection.update({
+        name: name,
+        "time.day": day,
+        title: title
+      }, {
+        $set: {
+          markdown: post.markdown,
+          post: post.post,
+          subject: post.subject
+        }
+      }, function(err) {
+        if (err) {
+          return callback(err);
+        }
+        callback(null);
         mongodb.close();
       })
     });

@@ -8,21 +8,26 @@
   width: 100%;
   z-index: 200;
   font-size: 12px;
-  span {
+  overflow: hidden;
+  .bar {
+    position: absolute;
     top: 50%;
     transform: translateY(-50%);
   }
-  .name {
-    position: absolute;
-    right: 60px;
+  .header_bar {
+    right: 20px;
+  }
+  span,a {
+    color: #fff;
+    margin-left: 10px;
+    &:hover {
+      color: #fae;
+    }
   }
   .logout {
-    position: absolute;
-    right: 20px;
+    // position: absolute;
+    // right: 20px;
     cursor: pointer;
-    &:hover {
-      color: #f1f1f1;
-    }
   }
 }
 .content {
@@ -69,8 +74,12 @@
     .line {
       border: 1px solid #ccc;
     }
-    .seeAll {
+    .seeAll{
       font-size: 12px;
+    }
+    .operation {
+      font-size: 12px;
+      margin-left: 10px;
     }
   }
 }

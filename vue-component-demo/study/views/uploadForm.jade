@@ -1,0 +1,12 @@
+form#uploadForm.form-horizontal
+  div.form-group
+    lable.control-label.col-sm-1(for="title") 上传文件：
+    div.col-sm-5
+      input#file(type="file", name="file")
+      label 图片宽度：
+      input.width(size="5")
+      span.split - 
+      label 图片长度：
+      input.height(size="5")
+      a.btn.btn-warning.upload 上传
+      a.btn.btn-success.showPreview 显示预览

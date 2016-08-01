@@ -101,7 +101,7 @@ exports.login = function(req, res) {
     req.session.user = user;
     return res.send({
       success: "登录成功",
-      location: "/socketIO_chat/home"
+      location: "/blog/" + req.body.name
         // location: "/socketIO_chat"
     })
   })

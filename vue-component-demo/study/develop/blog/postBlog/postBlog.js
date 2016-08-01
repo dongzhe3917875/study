@@ -16,7 +16,12 @@ $(document).ready(function() {
 
 
 
-  var converter = new showdown.Converter();
+  var converter = new showdown.Converter({
+    "omitExtraWLInCodeBlocks": true,
+    "strikethrough": true,
+    "tables": true,
+    "ghCodeBlocks": true
+  });
   $("#context").on("keyup", function() {
     var text = $(this).val();
     html = converter.makeHtml(text);
@@ -29,6 +34,7 @@ $(document).ready(function() {
       url: "/blog/post_blog",
       data: {
         title: $("#title").val(),
+        markdown: $("#context").val(),
         post: $(".showhtml").html(),
         subject: $("#subject").val()
       },
@@ -41,6 +47,29 @@ $(document).ready(function() {
       }
     })
   })
+
+  $(".update").on("click", function(event) {
+    event.preventDefault();
+    var url_arr = location.pathname.split("/");
+    url_arr.splice(url_arr.length - 1, 1, "update");
+    var url = url_arr.join("/");
+    ajax_func({
+      url: url,
+      data: {
+        markdown: $("#context").val(),
+        post: $(".showhtml").html(),
+        subject: $("#subject").val()
+      },
+      success: function(data) {
+        if (data.error) {
+          return alert(data.error);
+        }
+        alert(data.success);
+        location.href = data.location;
+      }
+    })
+  })
+
 
   $(".upload").on("click", function() {
     doUpload();

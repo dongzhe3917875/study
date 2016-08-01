@@ -1,11 +1,9 @@
 link(rel='stylesheet', href="/stylesheets/socketIO_chat_home.css", type="text/css")
 link(rel='stylesheet', href="/bower_components/bootstrap/dist/css/bootstrap.css", type="text/css")
 div.body
-  div.header
-    span.name Hi, #{user.name} 你好！
-    span.logout 退出
+  include head
   div.content
-    //- a.btn.btn-warning.post(href="/blog/post", target="_blank") 创建一篇文章
+    a.btn.btn-warning.post(href="/blog/post", target="_blank") 创建一篇文章
     div.context_wrapper
       div.sidebar
         ul
@@ -19,6 +17,9 @@ div.body
           p 
             h4 
               a(href="/blog/#{item.name}/#{item.time.day}/#{item.title}") #{item.title}
+              if user.name == item.name
+                a.operation.edit(href="/blog/#{item.name}/#{item.time.day}/#{item.title}/edit") 编辑
+                a.operation.delete(href="javascript:;") 删除
             p.info 
               日期：
               #{item.time.minute}

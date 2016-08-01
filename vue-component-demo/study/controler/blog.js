@@ -7,7 +7,8 @@ exports.post = function(req, res) {
 exports.post_blog = function(req, res) {
   res.header("Content-Type", "application/json;charset=utf-8");
   var currentUser = req.session.user;
-  var post = new Post(currentUser.name, req.body.title, req.body.subject, req
+  var post = new Post(currentUser.name, req.body.title, req.body.markdown,
+    req.body.subject, req
     .body.post);
   console.log(post);
   post.save(function(err) {
@@ -64,4 +65,45 @@ exports.listone = function(req, res) {
       post: post
     })
   })
+}
+
+exports.edit = function(req, res) {
+  Post.getOne(req.params.name, req.params.day, req.params.title, function(err,
+    post) {
+    if (err) {
+      return res.send({
+        error: "error"
+      })
+    }
+    res.render('article_edit', {
+      user: req.session.user,
+      title: req.params.title,
+      post: post
+    })
+  })
+}
+
+exports.update_post = function(req, res) {
+  var currentUser = req.session.user;
+  var post = {
+    markdown: req.body.markdown,
+    post: req.body.post,
+    subject: req.body.subject
+  }
+  Post.update(currentUser.name, req.params.day, req.params.title,
+    post,
+    function(err) {
+      var url = encodeURI("/blog/" + req.params.name + "/" + req.params.day +
+        "/" + req.params.title);
+
+      if (err) {
+        return res.send({
+          error: err
+        })
+      }
+      return res.send({
+        success: "更新成功",
+        location: url
+      })
+    })
 }
