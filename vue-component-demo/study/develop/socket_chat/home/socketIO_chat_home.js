@@ -1,17 +1,19 @@
-var ajax_func = function(obj) {
-  var defaultOption = {
-    url: "",
-    type: "POST",
-    dataType: "json",
-    data: {},
+var common = require("./common.js")
+$(".delete").on("click", function() {
+  var url = get_operate_url("remove");
+  var obj = {
+    url: url,
     success: function(data) {
-
+      var message = data.error || data.success;
+      alert(message);
+      if (data.success) {
+        window.location.href = data.location;
+      }
     }
   }
-  var obj = $.extend(true, {},
-    defaultOption, obj);
-  $.ajax(obj);
-}
+  common.ajax_func.call(null, obj);
+})
+
 $(".logout").on("click", function() {
   var obj = {
     url: "/logout",
@@ -23,5 +25,5 @@ $(".logout").on("click", function() {
       }
     }
   }
-  ajax_func.call(null, obj);
+  common.ajax_func.call(null, obj);
 })

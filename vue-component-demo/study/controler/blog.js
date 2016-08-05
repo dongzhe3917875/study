@@ -107,3 +107,8 @@ exports.update_post = function(req, res) {
       })
     })
 }
+
+exports.remove = function(req, res) {
+  var currentUser = req.session.user;
+
+}

@@ -10,7 +10,7 @@ function Post(name, title, markdown, subject, post) {
 }
 
 module.exports = Post;
-
+// 增加
 Post.prototype.save = function(callback) {
   var date = new Date();
   var time = {
@@ -55,6 +55,7 @@ Post.prototype.save = function(callback) {
   });
 }
 
+// 查看所有
 Post.getAll = function(name, callback) {
 
   mongodb.open(function(err, db) {
@@ -90,7 +91,7 @@ Post.getAll = function(name, callback) {
   });
 }
 
-
+// 查看单个
 Post.getOne = function(name, day, title, callback) {
 
   mongodb.open(function(err, db) {
@@ -118,6 +119,7 @@ Post.getOne = function(name, day, title, callback) {
   });
 }
 
+// 更新
 Post.update = function(name, day, title, post, callback) {
 
   mongodb.open(function(err, db) {
@@ -140,6 +142,36 @@ Post.update = function(name, day, title, post, callback) {
           post: post.post,
           subject: post.subject
         }
+      }, function(err) {
+        if (err) {
+          return callback(err);
+        }
+        callback(null);
+        mongodb.close();
+      })
+    });
+  });
+}
+
+// 删除
+Post.remove = function(name, day, title, callback) {
+
+  mongodb.open(function(err, db) {
+    if (err) {
+      return callback(err)
+    }
+    db.collection("posts", function(err, collection) {
+      if (err) {
+        mongodb.close();
+        return callback(err);
+      }
+      console.log(name, day, title)
+      collection.remove({
+        name: name,
+        "time.day": day,
+        title: title
+      }, {
+        w: 1
       }, function(err) {
         if (err) {
           return callback(err);

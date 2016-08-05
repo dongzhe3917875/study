@@ -27,5 +27,7 @@ router.get('/:name/:day/:title/edit', checkLogin);
 router.get('/:name/:day/:title/edit', blog.edit);
 router.post('/:name/:day/:title/update', checkLogin);
 router.post('/:name/:day/:title/update', blog.update_post);
+// router.post('/:name/:day/:title/remove', checkLogin);
+// router.post('/:name/:day/:title/remove', blog.remove_post);
 
 module.exports = router;

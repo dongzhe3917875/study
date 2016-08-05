@@ -50,9 +50,6 @@ $(document).ready(function() {
 
   $(".update").on("click", function(event) {
     event.preventDefault();
-    var url_arr = location.pathname.split("/");
-    url_arr.splice(url_arr.length - 1, 1, "update");
-    var url = url_arr.join("/");
     ajax_func({
       url: url,
       data: {
@@ -97,7 +94,6 @@ $(document).ready(function() {
     var fileName = file.name;
     var formData = new FormData();
     formData.append(fileName, fileObj);
-    console.log(formData)
     $.ajax({
       url: '/blog/upload',
       type: 'POST',
